@@ -27,10 +27,14 @@ def upload_file():
         pdf_extractor = PDFExtractor(filepath)
         top_left = pdf_extractor.process_top_left()
         top_right = pdf_extractor.process_top_right()
+        billed_to = pdf_extractor.process_billed_to()
+        shipped_to = pdf_extractor.process_shipped_to()
         
         response = {
             "top_left": top_left,
-            "top_right": top_right
+            "top_right": top_right,
+            "billed_to": billed_to,
+            "shipped_to": shipped_to
         }
         return jsonify(response)
 @app.route("/test")
@@ -39,4 +43,4 @@ def test():
 
 if __name__ == "__main__":
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    app.run(debug=True, host='0.0.0.0', port=8000)
+    app.run(debug=True, host='0.0.0.0', port=5000)

@@ -3,6 +3,7 @@ import pytesseract
 from pytesseract import Output
 from pdf2image import convert_from_path
 import numpy as np
+from extract import PDFExtractor
 
 # Path to the PDF file
 pdf_path = "./samples/1718343129462.pdf"
@@ -19,11 +20,11 @@ for i, image in enumerate(images):
     height, width, _ = image_np.shape
 
     # Draw horizontal lines
-    for y in range(0, height, 50):
+    for y in range(0, height, 100):
         cv2.line(image_np, (0, y), (width, y), (0, 255, 0), 1)
 
     # Draw vertical lines
-    for x in range(0, width, 50):
+    for x in range(0, width, 100):
         cv2.line(image_np, (x, 0), (x, height), (0, 255, 0), 1)
 
     # Display the image with grid lines

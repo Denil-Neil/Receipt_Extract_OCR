@@ -60,6 +60,42 @@ class PDFExtractor:
             }
             results.append(result)
         return results
+    def process_billed_to(self):
+        texts_bt = self.extract_text_from_region(50, 400, 750, 200)
+        results = []
+        for text_bt in texts_bt:
+            lines_bt = text_bt.splitlines()
+            if len(lines_bt) >= 3:
+                company_name = lines_bt[0]
+                address_line1 = lines_bt[1]
+                address_line2 = lines_bt[2]
+            else:
+                company_name = address_line1 = address_line2 = ""
+            result = {
+                "company_name": company_name,
+                "address_line1": address_line1,
+                "address_line2": address_line2
+            }
+            results.append(result)
+        return results
+    def process_shipped_to(self):
+        texts_bt = self.extract_text_from_region(800, 400, 800, 200)
+        results = []
+        for text_bt in texts_bt:
+            lines_bt = text_bt.splitlines()
+            if len(lines_bt) >= 3:
+                company_name = lines_bt[0]
+                address_line1 = lines_bt[1]
+                address_line2 = lines_bt[2]
+            else:
+                company_name = address_line1 = address_line2 = ""
+            result = {
+                "company_name": company_name,
+                "address_line1": address_line1,
+                "address_line2": address_line2
+            }
+            results.append(result)
+        return results
 
     def draw_grid_lines(self, grid_size=50):
         for i, image in enumerate(self.images):
