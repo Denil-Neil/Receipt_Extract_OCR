@@ -4,8 +4,9 @@ OCRTrial.ipynb
 .DS_Store
 
 .env
-create_db.py
+
 
 venv
 uploads
 temp
+package.json
