@@ -1,7 +1,7 @@
 __pycache__/
-ipynb_checkpoints/
-
+.ipynb_checkpoints/
 OCRTrial.ipynb
+.DS_Store
 
 .env
 create_db.py
