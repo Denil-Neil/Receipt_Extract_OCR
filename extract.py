@@ -3,6 +3,8 @@ import pytesseract
 from pytesseract import Output
 from pdf2image import convert_from_path
 import numpy as np
+from flask_sqlalchemy import SQLAlchemy
+
 
 class PDFExtractor:
     def __init__(self, pdf_path):

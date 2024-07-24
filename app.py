@@ -2,8 +2,16 @@ from flask import Flask, request, jsonify, render_template
 import os
 from werkzeug.utils import secure_filename
 from extract import PDFExtractor
+from dotenv import load_dotenv
+
+load_dotenv()
+
+database_uri = os.getenv('DB_URI')
 
 app = Flask(__name__)
+
+## Add MySQL DB
+app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 app.config['UPLOAD_FOLDER'] = './uploads'
 
 @app.route("/")
