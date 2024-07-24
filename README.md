@@ -4,9 +4,7 @@ This project demonstrates how to extract and store data from PDF files using OCR
 
 ## Video Demonstration
 
-<div style="position: relative; padding-bottom: 64.90384615384616%; height: 0;">
-  <iframe src="https://www.loom.com/embed/bdcc626e09b240f2a98c0e9a77531425?sid=9fd85024-a355-40bd-a5dd-1b2f1040a950" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
-</div>
+[Watch the video demonstration on Loom](https://www.loom.com/share/bdcc626e09b240f2a98c0e9a77531425?sid=4217733c-9189-4dfa-97b1-5fa4a2ee5661)
 
 ## Setup Instructions
 
