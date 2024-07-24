@@ -13,11 +13,6 @@ images = convert_from_path(pdf_path)
 
 pdf_extractor = PDFExtractor(pdf_path)
 
-# print(pdf_extractor.process_billed_to())
-top_left = pdf_extractor.process_top_left()
-top_right = pdf_extractor.process_top_right()
-billed_to = pdf_extractor.process_billed_to()
-shipped_to = pdf_extractor.process_shipped_to()
-table_data = pdf_extractor.process_table_data()
+footer = pdf_extractor.process_footer_data()
 
-print(top_left, '\n', top_right, '\n',billed_to, '\n',shipped_to, '\n',table_data)
+print(footer)

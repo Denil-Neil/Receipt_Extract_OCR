@@ -145,7 +145,31 @@ class PDFExtractor:
                 'extended_amount': ext
             })
         return combined_data
+    
+    def process_footer_data(self):
+        texts_footers = self.extract_text_from_region(1400, 1350, 200, 450)
+        results_footer = []
+        temp = []
+        for text_footer in texts_footers:
+            lines_part = text_footer.splitlines()
+            for line in lines_part:
+                if line != '':
+                    temp.append(line)                
 
+        sub_total = (float(temp[0].removeprefix('$').replace(',','')))
+        shipping_charges = (float(temp[1].removeprefix('$').replace(',','')))
+        additional_charges = (float(temp[2].removeprefix('$').replace(',','')))
+        tax = (float(temp[3].removeprefix('$').replace(',','')))
+        discount = (float(temp[4].removeprefix('($').replace(',','').replace(')','')))
+        total = (float(temp[5].removeprefix('$').replace(',','')))
 
-pdf_extractor = PDFExtractor('./samples/1718343157880.pdf')
-table_data = pdf_extractor.process_table_data()
+        results_footer.append({
+            "sub_total": sub_total,
+            "shipping_charges": shipping_charges,
+            "additional_charges": additional_charges,
+            "tax": tax,
+            "discount": discount,
+            "total": total
+        })
+        return results_footer
+
