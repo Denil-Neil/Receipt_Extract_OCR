@@ -3,8 +3,9 @@ import pytesseract
 from pytesseract import Output
 from pdf2image import convert_from_path
 import numpy as np
+from PIL import Image
 from flask_sqlalchemy import SQLAlchemy
-
+import re
 
 class PDFExtractor:
     def __init__(self, pdf_path):
@@ -62,6 +63,7 @@ class PDFExtractor:
             }
             results.append(result)
         return results
+
     def process_billed_to(self):
         texts_bt = self.extract_text_from_region(50, 400, 750, 200)
         results = []
@@ -69,17 +71,17 @@ class PDFExtractor:
             lines_bt = text_bt.splitlines()
             if len(lines_bt) >= 3:
                 company_name = lines_bt[0]
-                address_line1 = lines_bt[1]
-                address_line2 = lines_bt[2]
-            else:
-                company_name = address_line1 = address_line2 = ""
+                address_line = lines_bt[1] + lines_bt[2]
+            elif len(lines_bt) == 2:
+                company_name = lines_bt[0]
+                address_line = lines_bt[1]
             result = {
                 "company_name": company_name,
-                "address_line1": address_line1,
-                "address_line2": address_line2
+                "address_line": address_line
             }
             results.append(result)
         return results
+
     def process_shipped_to(self):
         texts_bt = self.extract_text_from_region(800, 400, 800, 200)
         results = []
@@ -87,29 +89,63 @@ class PDFExtractor:
             lines_bt = text_bt.splitlines()
             if len(lines_bt) >= 3:
                 company_name = lines_bt[0]
-                address_line1 = lines_bt[1]
-                address_line2 = lines_bt[2]
-            else:
-                company_name = address_line1 = address_line2 = ""
+                address_line = lines_bt[1] + lines_bt[2]
+            elif len(lines_bt) == 2:
+                company_name = lines_bt[0]
+                address_line = lines_bt[1]
             result = {
                 "company_name": company_name,
-                "address_line1": address_line1,
-                "address_line2": address_line2
+                "address_line": address_line
             }
             results.append(result)
         return results
 
-    def draw_grid_lines(self, grid_size=50):
-        for i, image in enumerate(self.images):
-            image_np = np.array(image)
-            height, width, _ = image_np.shape
-            for y in range(0, height, grid_size):
-                cv2.line(image_np, (0, y), (width, y), (0, 255, 0), 1)
-            for x in range(0, width, grid_size):
-                cv2.line(image_np, (x, 0), (x, height), (0, 255, 0), 1)
-            cv2.imshow('Image with Grid Lines', image_np)
+    def process_table_data(self):
+        texts_part = self.extract_text_from_region(50, 750, 650, 600)
+        results_part = []
+        for text_part in texts_part:
+            lines_part = text_part.splitlines()
+            for line in lines_part:
+                if line != '':
+                    results_part.append(line)
 
-# pdf_extractor = PDFExtractor("./samples/1718343129462.pdf")
-# # print(pdf_extractor.process_top_left())
-# print(pdf_extractor.process_top_right())
-# pdf_extractor.draw_grid_lines(grid_size=50)
+        texts_quants = self.extract_text_from_region(700, 750, 200, 600)
+        results_quant = []
+        for text_quant in texts_quants:
+            lines_quant = text_quant.splitlines()
+            for line in lines_quant:
+                if line != '':
+                    results_quant.append(int(line))
+        
+        texts_prices = self.extract_text_from_region(1000, 750, 200, 600)
+        results_price = []
+        for text_price in texts_prices:
+            lines_price = text_price.splitlines()
+            for line in lines_price:
+                if line != '':
+                    line = line.replace(',','')
+                    line = line.removeprefix('$')
+                    results_price.append(float(line))
+
+        texts_exts = self.extract_text_from_region(1400, 750, 200, 600)
+        results_ext = []
+        for text_ext in texts_exts:
+            lines_ext = text_ext.splitlines()
+            for line in lines_ext:
+                if line != '':
+                    line = line.replace(',','')
+                    line = line.removeprefix('$')
+                    results_ext.append(float(line))
+        combined_data = []
+        for part, quant, price, ext in zip(results_part, results_quant, results_price, results_ext):
+            combined_data.append({
+                'part_number': part,
+                'quantity': quant,
+                'price': price,
+                'extended_amount': ext
+            })
+        return combined_data
+
+
+pdf_extractor = PDFExtractor('./samples/1718343157880.pdf')
+table_data = pdf_extractor.process_table_data()

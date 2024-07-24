@@ -6,7 +6,7 @@ import numpy as np
 from extract import PDFExtractor
 
 # Path to the PDF file
-pdf_path = "./samples/1718343129462.pdf"
+pdf_path = "./samples/1718343157880.pdf"
 
 # Convert PDF to a list of PIL images
 images = convert_from_path(pdf_path)

@@ -33,16 +33,17 @@ def upload_file():
         file.save(filepath)
         
         pdf_extractor = PDFExtractor(filepath)
-        top_left = pdf_extractor.process_top_left()
-        top_right = pdf_extractor.process_top_right()
+        header = pdf_extractor.process_top_left()
+        invoice_details = pdf_extractor.process_top_right()
         billed_to = pdf_extractor.process_billed_to()
         shipped_to = pdf_extractor.process_shipped_to()
-        
+        table_data = pdf_extractor.process_table_data()
         response = {
-            "top_left": top_left,
-            "top_right": top_right,
+            "header": header,
+            "invoice_details": invoice_details,
             "billed_to": billed_to,
-            "shipped_to": shipped_to
+            "shipped_to": shipped_to,
+            "table_data": table_data,
         }
         return jsonify(response)
 @app.route("/test")
