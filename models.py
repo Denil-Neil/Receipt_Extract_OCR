@@ -2,6 +2,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
 
+
 db = SQLAlchemy()
 class Customer(db.Model):
  __tablename__ = 'Customers'
