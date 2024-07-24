@@ -15,7 +15,7 @@ database = os.getenv('DB_NAME')
 mydb = mysql.connector.connect(
     host=host,
     user=user,
-    passwd=password,  # Ensure the correct password is being used
+    passwd=password,  
     database=database
 )
 
