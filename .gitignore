@@ -1,7 +1,11 @@
-./__pycache__/*
-./ipynb_checkpoints/*
+__pycache__/
+ipynb_checkpoints/
 
 OCRTrial.ipynb
 
 .env
 create_db.py
+
+venv
+uploads
+temp
